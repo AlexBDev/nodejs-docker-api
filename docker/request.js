@@ -12,6 +12,18 @@ class Request {
         );
     }
 
+    json(path, method, options = {}, callback) {
+        this.req(path, method, options, (error, data) => {
+             if (error) {
+                 callback(error);
+
+                 return;
+             }
+
+            callback(null, JSON.parse(data || '{}'));
+        });
+    }
+
     req(path, method, options = {}, callback) {
         options.path = this.getPath(path);
         options.socketPath = this.options.socketPath;
@@ -25,7 +37,7 @@ class Request {
             });
 
             response.on('end', () => {
-                callback(null, JSON.parse(data || '{}'));
+                callback(null, data);
             });
         })
         .on('error', (error) => {

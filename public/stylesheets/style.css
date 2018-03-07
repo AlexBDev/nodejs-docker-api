@@ -2,6 +2,25 @@
     margin-top: 35px;
 }
 
+.container-attr {
+    margin: 35px;
+}
+
 .container-attr span {
-  display: block;
+    display: block;
+}
+
+.container-actions {
+    margin-top: 15px;
+}
+
+.truncate-10em {
+    width: 10em;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.container-attr .clipboard-copy {
+    vertical-align: text-bottom;
+    margin-left: 25px;
 }

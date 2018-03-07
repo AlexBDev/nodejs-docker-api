@@ -1,4 +1,6 @@
 let req = require('./request');
+const { URL } = require('url');
+
 
 class Container {
     constructor(Request) {
@@ -14,7 +16,7 @@ class Container {
     };
 
     list(callback) {
-        this.request.req('/containers/json', 'GET', {}, (error, content) => {
+        this.request.json('/containers/json', 'GET', {}, (error, content) => {
             if (error) {
                 callback(error);
 
@@ -26,7 +28,7 @@ class Container {
     };
 
     inspect(id, callback) {
-        this.request.req('/containers/'+id+'/json', 'GET', {}, (error, content) => {
+        this.request.json('/containers/'+id+'/json', 'GET', {}, (error, content) => {
             if (error) {
                 callback(error);
 
@@ -38,7 +40,7 @@ class Container {
     };
 
     top(id, callback) {
-        this.request.req('/containers/'+id+'/top', 'GET', {}, (error, content) => {
+        this.request.json('/containers/'+id+'/top', 'GET', {}, (error, content) => {
             if (error) {
                 callback(error);
 
@@ -50,7 +52,7 @@ class Container {
     };
 
     stop(id, callback) {
-        this.request.req('/containers/'+id+'/stop', 'POST', {}, (error, content) => {
+        this.request.json('/containers/'+id+'/stop', 'POST', {}, (error, content) => {
             if (error) {
                 callback(error);
 
@@ -59,6 +61,30 @@ class Container {
 
             if (!content.hasOwnProperty('message')) {
                 content.success = true;
+            }
+
+            callback(null, content);
+        });
+    };
+
+    logs(id, callback) {
+        this.request.req('/containers/'+id+'/logs?stdout=true&stderr=true', 'GET', {}, (error, content) => {
+            if (error) {
+                callback(error);
+
+                return;
+            }
+
+            callback(null, content);
+        });
+    };
+
+    inactive(id, callback) {
+        this.request.req('/containers/json?filters='+encodeURIComponent('{"status": ["exited", "paused", "dead"]}'), 'GET', {}, (error, content) => {
+            if (error) {
+                callback(error);
+
+                return;
             }
 
             callback(null, content);
