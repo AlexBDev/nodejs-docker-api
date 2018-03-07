@@ -10,13 +10,14 @@ block content
             div(class="no-results") Any containers has been started
 
         each container in list
-            div(class="container-attr col-sm-1 col-md-2 card" data-container-id=container.Id)
+            div(class="container-attr col-sm-1 col-md-3 card" data-container-id=container.Id)
                 div(class="card-body")
                     div(class="card-title")
                         span(class="truncate-10em d-inline-block")= "Id: "+container.Id
                         button(class="clipboard-copy btn btn-sm d-inline-block tooltip-click" data-placement="top" title="Copied !" data-clipboard-text=container.Id) Copy
                     div(class="card-content")
                         span="Image: " + container.Image
+                        span="Nom: " + container.Names.join(',')
                         span="State: " + container.State
                         span="Status: " + container.Status
                         div(class="container-actions text-right")
@@ -31,17 +32,19 @@ block content
             div(class="no-results") Any containers has been started
 
         each container in listInactive
-            div(class="container-attr col-sm-1 col-md-2 card" data-container-id=container.Id)
+            div(class="container-attr col-sm-1 col-md-3 card" data-container-id=container.Id)
                 div(class="card-body")
                     div(class="card-title")
                         span(class="truncate-10em d-inline-block")= "Id: "+container.Id
                         button(class="clipboard-copy btn btn-sm d-inline-block tooltip-click" data-placement="top" title="Copied !" data-clipboard-text=container.Id) Copy
                     div(class="card-content")
                         span="Image: " + container.Image
+                        span="Nom: " + container.Names.join(',')
                         span="State: " + container.State
                         span="Status: " + container.Status
                         div(class="container-actions text-right")
                             button(data-id=container.Id class="container-action action-logs btn btn-primary" data-toggle="modal" data-target="#container-logs") logs
+                            button(data-id=container.Id class="container-action action-start btn btn-success ml-2") start
                             button(data-id=container.Id class="container-action action-remove btn btn-danger ml-2") remove
 
 

@@ -13,14 +13,14 @@ class Request {
     }
 
     json(path, method, options = {}, callback) {
-        this.req(path, method, options, (error, data) => {
+        this.req(path, method, options, (error, data, response) => {
              if (error) {
                  callback(error);
 
                  return;
              }
 
-            callback(null, JSON.parse(data || '{}'));
+            callback(null, JSON.parse(data || '{}'), response);
         });
     }
 
@@ -37,7 +37,11 @@ class Request {
             });
 
             response.on('end', () => {
-                callback(null, data);
+                console.log('REQUEST : '+path);
+                console.log(data);
+                console.log(response.statusCode);
+                console.log('END REQUEST : '+path);
+                callback(null, data, response);
             });
         })
         .on('error', (error) => {

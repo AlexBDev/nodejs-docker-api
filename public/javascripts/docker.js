@@ -61,6 +61,23 @@ const actionContainerRemove = (ev) => {
         });
 };
 
+const actionContainerStart = (ev) => {
+    let $element = $(ev.currentTarget);
+    let id = $element.data('id');
+
+    if (xhr !== null) {
+        xhr.abort();
+    }
+
+    xhr = $.ajax({
+            url: apiBaseUri+'/containers/start/'+id,
+            method: 'POST'
+        })
+        .done(response => {
+            $element.parents('.container-attr').remove();
+        });
+};
+
 $(() => {
     $('.container-action.action-stop').on('click', (ev) => {
         actionContainerStop(ev);
@@ -72,5 +89,9 @@ $(() => {
 
     $('.container-action.action-remove').on('click', (ev) => {
         actionContainerRemove(ev);
+    });
+
+    $('.container-action.action-start').on('click', (ev) => {
+        actionContainerStart(ev);
     });
 });
