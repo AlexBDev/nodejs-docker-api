@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+    h1(class='text-center') #{title}
+    div(class='container-list row')
+        if (-list)
+            div(class='no-results') Any containers has been started
+
+        each container in list
+            div(class='container-attr col-sm')
+                span= 'Id: ' + container.Id
+                span= 'Image: ' + container.Image
+                span= 'State: ' + container.State
+                span= 'Status: ' + container.Status
+                button(data-id=container.Id class='container-action action-stop btn btn-danger') stop
+
+block script
+    script(src='/javascripts/docker.js')
