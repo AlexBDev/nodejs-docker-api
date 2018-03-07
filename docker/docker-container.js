@@ -79,8 +79,20 @@ class Container {
         });
     };
 
-    inactive(id, callback) {
-        this.request.req('/containers/json?filters='+encodeURIComponent('{"status": ["exited", "paused", "dead"]}'), 'GET', {}, (error, content) => {
+    inactive(callback) {
+        this.request.json('/containers/json?filters='+encodeURIComponent('{"status": ["exited"]}'), 'GET', {}, (error, content) => {
+            if (error) {
+                callback(error);
+
+                return;
+            }
+
+            callback(null, content);
+        });
+    };
+
+    remove(id, callback) {
+        this.request.json('/containers/'+id, 'DELETE', {}, (error, content) => {
             if (error) {
                 callback(error);
 

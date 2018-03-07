@@ -9,10 +9,39 @@ router.get('/', function(req, res, next) {
         "version": "/v1.26"
     });
 
-    Docker.container().list((error, json) => {
-        res.render('containers/list', { title: 'Docker API NODE', list: json});
+    let active = new Promise((resolve, reject) => {
+        Docker.container().list((error, json) => {
+           if (error) {
+               reject(error);
+
+               return;
+           }
+
+           resolve(json);
+        });
     });
 
+    let inactive = new Promise((resolve, reject) => {
+        Docker.container().inactive((error, json) => {
+           if (error) {
+               reject(error);
+
+               return;
+           }
+
+           resolve(json);
+        });
+    });
+
+    Promise.all([active, inactive])
+        .then(values => {
+            console.log(values);
+            res.render('containers/list', { title: 'Docker API NODE', list: values[0], listInactive: values[1]});
+        })
+        .catch(error => {
+            throw error;
+        })
+    ;
 });
 
 module.exports = router;

@@ -12,6 +12,12 @@ router.get('/stop/:id', function(req, res, next) {
     });
 });
 
+router.delete('/remove/:id', function(req, res, next) {
+    Docker.container().remove(req.params.id, (error, json) => {
+        res.json(json);
+    });
+});
+
 router.get('/logs/:id', function(req, res, next) {
     Docker.container().logs(req.params.id, (error, json) => {
         res.json(json);
